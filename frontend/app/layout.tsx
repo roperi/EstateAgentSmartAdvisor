@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Interactive Estate Agent AI Chatbot',
-  description: 'The Interactive Estate Agent AI Chatbot is a cutting-edge virtual assistant designed to engage visitors on a property listing website. It utilizes natural language processing and machine learning algorithms to understand user queries, answer questions, and guide them through the property selection process',
+  title: 'Interactive Estate Agents | Your Journey to the Perfect Home Starts Here',
+  description: "Interactive Estate Agents is a modern and technology-driven estate agency that redefines the real estate experience. With an AI-powered Smart Advisor, users can engage in dynamic conversations to explore property details effortlessly. The platform integrates innovative features like audio recording, fostering real-time communication and creating an immersive environment. The website's sleek design, high-quality images, and intuitive layout enhance user experience. While embracing cutting-edge technology, Interactive Estate Agents maintains essential features of traditional agencies, providing a comprehensive and engaging platform for navigating the property market",
 }
 
 export default function RootLayout({
