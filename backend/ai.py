@@ -1,11 +1,39 @@
-import openai
-import key
-import tempfile
 import os
+import sys
+import openai
+import tempfile
+import logging
+
+
+# Create logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+# Get paths
+scriptdir = os.path.dirname(os.path.abspath(__file__))
+mypath = os.path.join(scriptdir, 'log', 'ai.log')
+# Create file handler which logs even DEBUG messages
+fh = logging.FileHandler(mypath)
+fh.setLevel(logging.DEBUG)
+# Create console handler
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.DEBUG)
+# create formatter and add it to the handlers
+formatter = logging.Formatter('[%(levelname)s. %(name)s, (line #%(lineno)d) - %(asctime)s] %(message)s')
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+# add handlers to logger
+logger.addHandler(fh)
+logger.addHandler(ch)
+
+
+# Get credentials
+openai.api_key = os.environ.get('OPENAI_API_KEY')
+
+
+# AI Agent
 
 conversation = []
 
-openai.api_key = key.openai_key
 
 def get_ai_response(question):
 
@@ -48,7 +76,7 @@ def get_ai_response(question):
             """
         }, {
             "role": "assistant",
-            "content": "Hello, my name is John Doe and I am calling from Cleaning LLC. How are you doing today"
+            "content": "Hello, my name is John Doe and I am calling from Cleaning LLC. How are you doing today?"
         }
     ]
 
@@ -63,6 +91,7 @@ def get_ai_response(question):
                 "role": "user",
                 "content": message["user"]
             })
+
     messages.append({
         "role": "user",
         "content": question
@@ -78,16 +107,19 @@ def get_ai_response(question):
         messages=messages,
         stream=True
     )
-    print(response)
+    logger.info(response)
+
     def generate():
-        ai_response=""
+        ai_response = ""
+
         for chunk in response:
             if "content" in chunk.choices[0].delta:
-                #print(chunk)
+                logger.debug(chunk)
                 ai_response = ai_response + chunk.choices[0].delta.content
                 yield chunk.choices[0].delta.content
+
         conversation.append({
-            "asssistant": ai_response
+            "assistant": ai_response
         })
     return generate
 
@@ -100,7 +132,7 @@ def transcribe(request):
 
     audio_content = data["audio"]
     
-    with  open(temp_file_name, "wb") as f:
+    with open(temp_file_name, "wb") as f:
         f.write(audio_content.read())
     audio_file = open(temp_file_name, "rb")
 
