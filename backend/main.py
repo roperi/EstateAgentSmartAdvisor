@@ -1,29 +1,39 @@
+import os
 from flask import Flask, request, Response
-from flask_cors import CORS
+from flask_cors import cross_origin
 from ai import get_ai_response, transcribe
 from elevenlabs import generate, stream, set_api_key
-import key
+
+
+# Get credentials
+ELEVEN_API_KEY = os.environ.get('ELEVEN_API_KEY')
+set_api_key(ELEVEN_API_KEY)
+API_BASE_URL = os.environ.get('API_URL')
+
+# Flask
+
 app = Flask(__name__)
 
-CORS(app)
-
-set_api_key(key.ELEVENLABS_API_KEY)
-
 @app.route("/speak", methods=["POST"])
+@cross_origin(origin=API_BASE_URL)
 def speak():
-    # get a blob audio and respond vocally
+    # Transcribe audio input from customer
     question = transcribe(request)
+    # Generate a text response to customer
     generate_response = get_ai_response(question)
-
+    # Convert generated response to speech
     audio = generate(
         text=generate_response(),
-        voice="Domi",
+        voice="Daniel",
         model="eleven_multilingual_v2",
         stream=True
     )
     stream(audio)
 
-    return Response(audio, mimetype="audio/wav")
+    response = Response(audio, mimetype="audio/wav")
+
+    return response
+
 
 if __name__ == "__main__":
     app.run(debug=True)
