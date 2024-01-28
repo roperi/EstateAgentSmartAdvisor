@@ -1,17 +1,21 @@
 "use client";
 import { Button } from "../components/ui/button";
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 const Product = () => {
   const [audioUrl, setAudioUrl] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audioStream, setAudioStream] = useState(null);
-  const [recorder, setRecorder] = useState(null);
+//   const [audioStream, setAudioStream] = useState(null);
+  const [audioStream, setAudioStream] = useState<MediaStream | null>(null);
+//   const [recorder, setRecorder] = useState(null);
+  const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
   const audioRef = useRef(null);
 
   useEffect(() => {
-    if (audioUrl && isPlaying) {
-      audioRef.current.play();
+    if (audioUrl && isPlaying && audioRef.current) {
+      (audioRef.current as HTMLAudioElement).play();
+      console.log(audioUrl, isPlaying, audioRef.current);
     }
   }, [audioUrl, isPlaying]);
 
@@ -23,7 +27,8 @@ const Product = () => {
       const mediaRecorder = new MediaRecorder(stream);
       setRecorder(mediaRecorder);
 
-      const audioChunks = [];
+//       const audioChunks = [];
+      const audioChunks: Blob[] = [];
 
       mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) {
@@ -49,7 +54,9 @@ const Product = () => {
     }
   };
 
-  const sendAudioToBackend = async (audioBlob) => {
+//   const sendAudioToBackend = async (audioBlob) => {
+  const sendAudioToBackend = async (audioBlob: Blob) => {
+
     const formData = new FormData();
     formData.append('audio', audioBlob);
 
@@ -126,17 +133,15 @@ const Product = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-10">
         <div className="flex flex-col lg:flex-row lg:space-x-6">
          <div className="lg:w-2/3">
-            <img
+            <Image
               alt="Property"
               className="rounded-lg"
-              height="400"
               src="/images/property-1.jpg"
-              style={{
-                aspectRatio: "600/400",
-                objectFit: "cover",
-              }}
-              width="600"
-            />
+              width={600}
+              height={400}
+              layout="responsive"
+              objectFit="cover"
+            />;
             <div className="flex justify-center space-x-2 mt-2">
               <Button className="bg-[#00A396] text-white">Photos</Button>
               <Button className="bg-[#00A396] text-white">Floorplan</Button>
@@ -160,7 +165,7 @@ const Product = () => {
               bathroom, with 2 sizable Terraces with stunning views of Tower Bridge and toward Canary Wharf.
             </p>
             <div className="text-3xl font-bold my-4">£2,200,000</div>
-            <p className="text-gray-700 mb-6">Have questions about this property? Simply click the button below and greet with a "Hello, there!" to initiate a chat with our AI-driven Smart Advisor.</p>
+            <p className="text-gray-700 mb-6">Have questions about this property? Simply click the button below and greet with a &quot;Hello, there!&quot; to initiate a chat with our AI-driven Smart Advisor.</p>
             <div className="flex space-x-4">
                 {recorder ? (
                   <button onClick={stopRecording} className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full w-32 focus:outline-none">Stop</button>
@@ -183,7 +188,7 @@ const Product = () => {
   );
 };
 
-function BathIcon(props) {
+function BathIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -206,7 +211,7 @@ function BathIcon(props) {
   )
 }
 
-function BedIcon(props) {
+function BedIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
