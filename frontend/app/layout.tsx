@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Intelligent Sales Assistant',
-  description: 'Revolutionary AI-powered sales assistant',
+  title: 'Interactive Estate Agent AI Chatbot',
+  description: 'The Interactive Estate Agent AI Chatbot is a cutting-edge virtual assistant designed to engage visitors on a property listing website. It utilizes natural language processing and machine learning algorithms to understand user queries, answer questions, and guide them through the property selection process',
 }
 
 export default function RootLayout({
