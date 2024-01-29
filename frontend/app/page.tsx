@@ -15,7 +15,9 @@ const Product = () => {
   useEffect(() => {
     if (audioUrl && isPlaying && audioRef.current) {
       (audioRef.current as HTMLAudioElement).play();
-      console.log(audioUrl, isPlaying, audioRef.current);
+      console.log("Audio URL:", audioUrl);
+      console.log("Is Playing:", isPlaying);
+      console.log("Audio Ref:", audioRef.current);
     }
   }, [audioUrl, isPlaying]);
 
