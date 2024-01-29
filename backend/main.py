@@ -1,6 +1,6 @@
 import os
 from flask import Flask, request, Response
-from flask_cors import cross_origin
+from flask_cors import CORS#, cross_origin
 from ai import get_ai_response, transcribe
 from elevenlabs import generate, stream, set_api_key
 
@@ -13,9 +13,11 @@ API_BASE_URL = os.environ.get('API_URL')
 # Flask
 
 app = Flask(__name__)
+CORS(app)
+
 
 @app.route("/speak", methods=["POST"])
-@cross_origin(origin=API_BASE_URL)
+# @cross_origin(origin=API_BASE_URL)
 def speak():
     # Transcribe audio input from customer
     question = transcribe(request)
