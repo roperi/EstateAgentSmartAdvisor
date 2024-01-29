@@ -30,16 +30,9 @@ def speak():
         stream=True
     )
 
-    # Consume the generator and store its content in a list
-    audio_content = list(audio)
+    stream(audio)
 
-    # Check if the audio content is not empty
-    if audio_content:
-        # Stream the audio content to the client
-        return Response(audio_content, mimetype="audio/wav")
-    else:
-        # Handle the case where the audio content is empty
-        return Response("Audio content is empty", status=500, mimetype="text/plain")
+    response = Response(audio, mimetype="audio/wav")
 
     return response
 
