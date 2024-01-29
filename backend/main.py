@@ -17,7 +17,6 @@ CORS(app)
 
 
 @app.route("/speak", methods=["POST"])
-# @cross_origin(origin=API_BASE_URL)
 def speak():
     # Transcribe audio input from customer
     question = transcribe(request)
@@ -30,9 +29,17 @@ def speak():
         model="eleven_multilingual_v2",
         stream=True
     )
-    stream(audio)
 
-    response = Response(audio, mimetype="audio/wav")
+    # Consume the generator and store its content in a list
+    audio_content = list(audio)
+
+    # Check if the audio content is not empty
+    if audio_content:
+        # Stream the audio content to the client
+        return Response(audio_content, mimetype="audio/wav")
+    else:
+        # Handle the case where the audio content is empty
+        return Response("Audio content is empty", status=500, mimetype="text/plain")
 
     return response
 
