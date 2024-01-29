@@ -25,7 +25,7 @@ def speak():
     # Convert generated response to speech
     audio = generate(
         text=generate_response(),
-        voice="Dorothy",
+        voice="Dave",
         model="eleven_multilingual_v2",
         stream=True
     )
