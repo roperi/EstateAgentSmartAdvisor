@@ -1,14 +1,19 @@
+# Copyright © 2024 roperi
+
 import os
 from flask import Flask, request, Response
-from flask_cors import CORS#, cross_origin
+from flask_cors import CORS
 from ai import get_ai_response, transcribe
 from elevenlabs import generate, stream, set_api_key
+from dotenv import load_dotenv
 
+
+# Load environment variables
+load_dotenv()
 
 # Get credentials
 ELEVEN_API_KEY = os.environ.get('ELEVEN_API_KEY')
 set_api_key(ELEVEN_API_KEY)
-API_BASE_URL = os.environ.get('API_URL')
 
 # Flask
 
@@ -29,7 +34,6 @@ def speak():
         model="eleven_multilingual_v2",
         stream=True
     )
-
     stream(audio)
 
     response = Response(audio, mimetype="audio/wav")
