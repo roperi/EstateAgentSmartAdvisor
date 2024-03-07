@@ -1,3 +1,5 @@
+![Estate Agent Smart Advisor Demo](https://github.com/roperi/EstateAgentSmartAdvisor/assets/9901508/d726c29a-4480-4d1a-bf49-4f3af9e50160)
+
 <h1 align="center">Estate Agent Smart Advisor - Real Estate Chatbot</h1>
 <h2 align="center">Powered by OpenAI + ElevenLabs + Flask + Next.js </h2>
 
